@@ -2,6 +2,8 @@ package com.product.management.model;
 
 import com.product.management.enumuration.Category;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,8 @@ import java.math.BigDecimal;
 @Entity
 public class Product implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String productName;
