@@ -41,6 +41,12 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
+    public List<Product> addAllProduct(List<Product> product) {
+        log.info("Adding product into DB and the request is {}", product);
+        return productRepository.saveAll(product);
+    }
+
+    @Override
     public Product updateProduct(Product product, Long id) {
         log.info("Updating product into DB and the id {} and request is {}", id, product);
         Product productForId = Optional.of(productRepository.findById(id)).get().orElseThrow(() -> new ProductNotFoundException("No Product available in this id", HttpStatus.NOT_FOUND));

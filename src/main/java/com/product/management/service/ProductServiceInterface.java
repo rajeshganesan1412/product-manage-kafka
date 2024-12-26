@@ -15,4 +15,6 @@ public interface ProductServiceInterface {
     Product updateProduct(Product product, Long id);
 
     Product deleteProduct(Long id);
+
+    List<Product> addAllProduct(List<Product> product);
 }

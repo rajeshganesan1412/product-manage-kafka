@@ -41,6 +41,12 @@ public class ProductController {
         return productServiceInterface.addProduct(product);
     }
 
+    @PostMapping("/products")
+    public List<Product> addAllProductDetails(@RequestBody List<Product> products) {
+        log.info("Entering controller to add product details and the request is: {}", products);
+        return productServiceInterface.addAllProduct(products);
+    }
+
     @PutMapping("/product/{id}")
     public Product updateProductDetails(@RequestBody Product product, @PathVariable Long id) {
         log.info("Entering controller to update product details and the request is: {}", product);
