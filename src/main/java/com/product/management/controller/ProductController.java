@@ -43,7 +43,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public List<Product> addAllProductDetails(@RequestBody List<Product> products) {
-        log.info("Entering controller to add product details and the request is: {}", products);
+        log.info("Entering controller to add all product details and the request is: {}", products);
         return productServiceInterface.addAllProduct(products);
     }
 
