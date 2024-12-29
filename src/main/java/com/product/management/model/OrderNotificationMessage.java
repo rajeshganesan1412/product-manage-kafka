@@ -1,12 +1,6 @@
 package com.product.management.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import com.product.management.enumuration.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,11 +17,17 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders implements Serializable {
+public class OrderNotificationMessage implements Serializable {
 
     private Long orderId;
 
+    private String userId;
+
+    private Long cartId;
+
     private List<OrderItems> orderItems;
+
+    private OrderStatus orderStatus;
 
     private BigDecimal totalCost;
 

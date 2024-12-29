@@ -1,8 +1,9 @@
 package com.product.management.service;
 
+import com.product.management.enumuration.OrderStatus;
 import com.product.management.exception.ProductNotFoundException;
 import com.product.management.model.OrderItems;
-import com.product.management.model.Orders;
+import com.product.management.model.OrderNotificationMessage;
 import com.product.management.model.Product;
 import com.product.management.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -75,14 +76,21 @@ public class ProductService implements ProductServiceInterface {
         return product.get();
     }
 
-    public List<Product> updateProductQuantityAfterOrderPlaced(Orders order) {
-        List<OrderItems> orderItems = Optional.of(order).map(Orders::getOrderItems)
+    public List<Product> updateProductQuantityAfterOrderPlaced(OrderNotificationMessage order) {
+        log.info("Updating order quantity");
+        List<OrderItems> orderItems = Optional.of(order).map(OrderNotificationMessage::getOrderItems)
                 .orElseThrow(() -> new ProductNotFoundException("No OrderItems Found in the order", HttpStatus.NOT_FOUND));
         List<Product> productList = new ArrayList<>();
         orderItems.forEach(orderItem -> {
             Product product = Optional.of(productRepository.findById(orderItem.getProductId())).get()
                     .orElseThrow(() -> new ProductNotFoundException("No Product available in this id", HttpStatus.NOT_FOUND));
-            product.setAvailableQuantity(product.getAvailableQuantity() - orderItem.getQuantity());
+            if (OrderStatus.CANCELLED.equals(order.getOrderStatus())) {
+                log.info("Updating for cancelling the order");
+                product.setAvailableQuantity(product.getAvailableQuantity() + orderItem.getQuantity());
+            } else {
+                log.info("Updating for placing the order");
+                product.setAvailableQuantity(product.getAvailableQuantity() - orderItem.getQuantity());
+            }
             productList.add(product);
         });
         return productRepository.saveAll(productList);

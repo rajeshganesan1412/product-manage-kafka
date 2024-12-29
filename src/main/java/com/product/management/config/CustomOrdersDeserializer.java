@@ -3,7 +3,7 @@ package com.product.management.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.product.management.model.Orders;
+import com.product.management.model.OrderNotificationMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class CustomOrdersDeserializer implements Deserializer<Orders> {
+public class CustomOrdersDeserializer implements Deserializer<OrderNotificationMessage> {
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -25,14 +25,14 @@ public class CustomOrdersDeserializer implements Deserializer<Orders> {
     }
 
     @Override
-    public Orders deserialize(String topic, byte[] data) {
+    public OrderNotificationMessage deserialize(String topic, byte[] data) {
         log.debug("Entered custom serializer. Topic {}, data {}", topic, data);
         if (data == null) {
             return null;
         }
-        Orders order = null;
+        OrderNotificationMessage order = null;
         try {
-            order = objectMapper.readValue(new String(data), Orders.class);
+            order = objectMapper.readValue(new String(data), OrderNotificationMessage.class);
         } catch (Exception e) {
             log.error("Failed to deserialize JSON to Order: {}", e.getMessage());
         }

@@ -1,6 +1,6 @@
 package com.product.management.consumer;
 
-import com.product.management.model.Orders;
+import com.product.management.model.OrderNotificationMessage;
 import com.product.management.model.Product;
 import com.product.management.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class OrderNotificationConsumer {
     private final ProductService productService;
 
     @KafkaListener(topics = "${order.message.topic}", groupId = "${order.consumer.group}")
-    public void consume(ConsumerRecord<String, Orders> consumerRecord) {
-
+    public void consume(ConsumerRecord<String, OrderNotificationMessage> consumerRecord) {
+        log.info("Order notification message consumed in product service");
         List<Product> productList = productService.updateProductQuantityAfterOrderPlaced(consumerRecord.value());
         productList.forEach(System.out::println);
     }

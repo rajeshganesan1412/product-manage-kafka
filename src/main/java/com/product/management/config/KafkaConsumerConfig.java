@@ -1,6 +1,6 @@
 package com.product.management.config;
 
-import com.product.management.model.Orders;
+import com.product.management.model.OrderNotificationMessage;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class KafkaConsumerConfig {
     private String groupId;
 
     @Bean
-    public ConsumerFactory<String, Orders> consumerFactory() {
+    public ConsumerFactory<String, OrderNotificationMessage> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -45,8 +45,8 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Orders> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Orders> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, OrderNotificationMessage> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, OrderNotificationMessage> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setCommonErrorHandler(errorHandler());
